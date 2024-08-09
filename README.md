@@ -1,5 +1,4 @@
 # C_DSA
 ## A data structures and algorithms library for C
 \
-This is a work in progress./
-test
+This is a work in progress.
