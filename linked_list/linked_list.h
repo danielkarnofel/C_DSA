@@ -1,64 +1,64 @@
-#ifndef ARRAY_LIST_H
-#define ARRAY_LIST_H
+#ifndef LINKED_LIST_H
+#define LINKED_LIST_H
 
 #include <stdbool.h>
 
 typedef int Element;
-typedef struct array_list_t *ArrayList;
+typedef struct linked_list_t *LinkedList;
 
 /**********************************************************
  * create: 
  **********************************************************/
-ArrayList create(int initial_capacity);
+LinkedList create();
 
 /**********************************************************
  * destroy: 
  **********************************************************/
-void destroy(ArrayList list);
+void destroy(LinkedList list);
 
 /**********************************************************
  * add_to_list: 
  **********************************************************/
-bool add_to_list(ArrayList list, int index, Element e);
+bool add_to_list(LinkedList list, int index, Element e);
 
 /**********************************************************
  * remove_from_list:
  **********************************************************/
-Element remove_from_list(ArrayList list, int index);
+Element remove_from_list(LinkedList list, int index);
 
 /**********************************************************
  * set:
  **********************************************************/
-Element set(ArrayList list, int index, Element e);
+Element set(LinkedList list, int index, Element e);
 
 /**********************************************************
  * get:
  **********************************************************/
-Element get(ArrayList list, int index);
+Element get(LinkedList list, int index);
 
 /**********************************************************
  * get_index:
  **********************************************************/
-int get_index(ArrayList list, Element e);
+int get_index(LinkedList list, Element e);
 
 /**********************************************************
  * size:
  **********************************************************/
-int size(ArrayList list);
+int size(LinkedList list);
 
 /**********************************************************
  * is_empty:
  **********************************************************/
-bool is_empty(ArrayList list);
+bool is_empty(LinkedList list);
 
 /**********************************************************
  * clear:
  **********************************************************/
-void clear(ArrayList list);
+void clear(LinkedList list);
 
 /**********************************************************
  * print_list:
  **********************************************************/
-void print_list(ArrayList list);
+void print_list(LinkedList list);
 
 #endif
