@@ -7,58 +7,58 @@ typedef int Element;
 typedef struct linked_list_t *LinkedList;
 
 /**********************************************************
- * create: 
+ * ll_create: 
  **********************************************************/
-LinkedList create();
+LinkedList ll_create();
 
 /**********************************************************
- * destroy: 
+ * ll_destroy: 
  **********************************************************/
-void destroy(LinkedList list);
+void ll_destroy(LinkedList list);
 
 /**********************************************************
- * add_to_list: 
+ * ll_add: 
  **********************************************************/
-bool add_to_list(LinkedList list, int index, Element e);
+bool ll_add(LinkedList list, int index, Element e);
 
 /**********************************************************
- * remove_from_list:
+ * ll_remove:
  **********************************************************/
-Element remove_from_list(LinkedList list, int index);
+Element ll_remove(LinkedList list, int index);
 
 /**********************************************************
- * set:
+ * ll_set:
  **********************************************************/
-Element set(LinkedList list, int index, Element e);
+Element ll_set(LinkedList list, int index, Element e);
 
 /**********************************************************
- * get:
+ * ll_get:
  **********************************************************/
-Element get(LinkedList list, int index);
+Element ll_get(LinkedList list, int index);
 
 /**********************************************************
- * get_index:
+ * ll_index_of:
  **********************************************************/
-int get_index(LinkedList list, Element e);
+int ll_index_of(LinkedList list, Element e);
 
 /**********************************************************
- * size:
+ * ll_size:
  **********************************************************/
-int size(LinkedList list);
+int ll_size(LinkedList list);
 
 /**********************************************************
- * is_empty:
+ * ll_is_empty:
  **********************************************************/
-bool is_empty(LinkedList list);
+bool ll_is_empty(LinkedList list);
 
 /**********************************************************
- * clear:
+ * ll_clear:
  **********************************************************/
-void clear(LinkedList list);
+void ll_clear(LinkedList list);
 
 /**********************************************************
- * print_list:
+ * ll_print:
  **********************************************************/
-void print_list(LinkedList list);
+void ll_print(LinkedList list);
 
 #endif
