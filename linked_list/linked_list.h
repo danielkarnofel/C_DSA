@@ -3,8 +3,10 @@
 
 #include <stdbool.h>
 
+/* A singly linked node implentation of an ordered list. */ 
+
+#define Element int
 #define NULL_ELEMENT 0;
-#define Element int;
 
 typedef struct linked_list_t *LinkedList;
 

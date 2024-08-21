@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include "linked_list.h"
 
-#define NULL_ELEMENT -1
-
 struct node {
 	Element value;
 	struct node *next;

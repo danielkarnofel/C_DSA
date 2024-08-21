@@ -29,10 +29,11 @@ static bool al_expand(ArrayList list)
 	Element* temp = realloc(list->array, sizeof(Element) * list->capacity * 2);
 	if (temp == NULL) {
 		print_error("Error: failed to expand array.\n");
-		return;
+		return false;
 	}
 	list->array = temp;
 	list->capacity *= 2;
+	return true;
 }
 
 ArrayList al_create(int initial_capacity)
@@ -146,7 +147,7 @@ bool al_is_empty(ArrayList list)
 void al_clear(ArrayList list)
 {
 	for (int i = 0; i < list->size; i++) {
-		list->array[i] = 0;
+		list->array[i] = NULL_ELEMENT;
 	}
 	list->size = 0;
 }
