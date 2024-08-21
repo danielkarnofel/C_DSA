@@ -1,74 +1,69 @@
 #include <stdio.h>
 #include "array_list.h"
 
-static void print(char *message) 
-{
-	printf("%s\n", message);
-}
-
 int main(void)
 {
 	printf("\n");
 
-	print("Creating list with capacity 5...");
-	ArrayList list = create(5);
-	print_list(list);
+	printf("Creating list with initial capacity 5...\n");
+	ArrayList list = al_create(5);
+	al_print(list);
 	printf("\n");
 
-	print("Adding 1-5 to list...");
+	printf("Adding 1-5 to list...\n");
 	for (int i = 0; i < 5; i++) {
-		add_to_list(list, i, i+1);
+		al_add(list, i, i+1);
 	}
-	print_list(list);
+	al_print(list);
 	printf("\n");
 
-	print("Adding 6-20 to list...");
+	printf("Adding 6-20 to list...\n");
 	for (int i = 5; i < 20; i++) {
-		add_to_list(list, i, i+1);
+		al_add(list, i, i+1);
 	}
-	print_list(list);
+	al_print(list);
 	printf("\n");
 
-	print("Removing from beginning of list...");
-	remove_from_list(list, 0);
-	print("Removing from middle of list...");
-	remove_from_list(list, size(list)/2);
-	print("Removing from end of list...");
-	remove_from_list(list, size(list)-1);
-	print_list(list);
+	printf("Removing from beginning of list...\n");
+	al_remove(list, 0);
+	printf("Removing from middle of list...\n");
+	al_remove(list, al_size(list)/2);
+	printf("Removing from end of list...\n");
+	al_remove(list, al_size(list)-1);
+	al_print(list);
 	printf("\n");
 
-	print("Setting index 0 to 100...");
-	set(list, 0, 100);
-	print("Setting index 10 to -100");
-	set(list, 10, -100);
-	print_list(list);
+	printf("Setting index 0 to 100...\n");
+	al_set(list, 0, 100);
+	printf("Setting index 10 to -100\n");
+	al_set(list, 10, -100);
+	al_print(list);
 	printf("\n");
 
-	print("Getting index 0..");
-	printf("Index 0: %d\n", get(list, 0));
-	print("Getting index 10..");
-	printf("Index 10: %d\n", get(list, 10));
-	print_list(list);
+	printf("Getting index 0..\n");
+	printf("Index 0: %d\n", al_get(list, 0));
+	printf("Getting index 10..\n");
+	printf("Index 10: %d\n", al_get(list, 10));
+	al_print(list);
 	printf("\n");
 
-	print("Getting index of value 100...");
-	printf("Index: %d\n", get_index(list, 100));
-	print("Getting index of value -100...");
-	printf("Index: %d\n", get_index(list, -100));
-	print("Getting index of value 1000...");
-	printf("Index: %d\n", get_index(list, 1000));
-	print_list(list);
+	printf("Getting index of value 100...\n");
+	printf("Index: %d\n", al_index_of(list, 100));
+	printf("Getting index of value -100...\n");
+	printf("Index: %d\n", al_index_of(list, -100));
+	printf("Getting index of value 1000...\n");
+	printf("Index: %d\n", al_index_of(list, 1000));
+	al_print(list);
 	printf("\n");
 
 
-	print("Clearing list...");
-	clear(list);
-	print_list(list);
+	printf("Clearing list...\n");
+	al_clear(list);
+	al_print(list);
 	printf("\n");
 
-	print("Destroying list...");
-	destroy(list);
+	printf("Destroying list...\n");
+	al_destroy(list);
 	printf("\n");
 }
 
