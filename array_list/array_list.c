@@ -1,11 +1,16 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include "array_list.h"
 
 struct array_list_t {
 	int capacity;
 	int size;
+	
+	int (*compare)(Element, Element);
+	void (*print_item)(Element);
+
 	Element *array;
 };
 
@@ -19,7 +24,7 @@ static bool is_full(ArrayList list)
 	return list->size == list->capacity;
 }
 
-static bool is_valid_index(ArrayList list, int index)
+static bool is_valid_index(ArrayList list, size_t index)
 {
 	return index >= 0 && index < list->size;
 }
@@ -36,7 +41,7 @@ static bool al_expand(ArrayList list)
 	return true;
 }
 
-ArrayList al_create(int initial_capacity)
+ArrayList al_create(size_t initial_capacity, int (*compare)(Element, Element), void (*print_item)(Element))
 {
 	ArrayList list = malloc(sizeof(struct array_list_t));
 	if (list == NULL) {
@@ -45,6 +50,8 @@ ArrayList al_create(int initial_capacity)
 	}
 	list->capacity = initial_capacity;
 	list->size = 0;
+	list->compare = compare;
+	list->print_item = print_item;
 	list->array = malloc(sizeof(Element) * initial_capacity);
 	if (list->array == NULL) {
 		print_error("Error: failed creating array.\n");
@@ -59,7 +66,7 @@ void al_destroy(ArrayList list)
 	free(list);
 }
 
-bool al_add(ArrayList list, int index, Element e)
+bool al_add(ArrayList list, size_t index, Element e)
 {
 	if (is_full(list)) {
 		if (!al_expand(list)) {
@@ -78,7 +85,7 @@ bool al_add(ArrayList list, int index, Element e)
 	return true;
 }
 
-Element al_remove(ArrayList list, int index)
+Element al_remove(ArrayList list, size_t index)
 {
 	if (al_is_empty(list)) {
 		print_error("Error: cannot remove from empty list.");
@@ -96,7 +103,7 @@ Element al_remove(ArrayList list, int index)
 	return e;
 }
 
-Element al_set(ArrayList list, int index, Element e)
+Element al_set(ArrayList list, size_t index, Element e)
 {
 	if (al_is_empty(list)) {
 		print_error("Error: cannot set, list is empty.");
@@ -111,7 +118,7 @@ Element al_set(ArrayList list, int index, Element e)
 	return previous;
 }
 
-Element al_get(ArrayList list, int index)
+Element al_get(ArrayList list, size_t index)
 {
 	if (al_is_empty(list)) {
 		print_error("Error: cannot get, list is empty.");
@@ -134,7 +141,7 @@ int al_index_of(ArrayList list, Element e)
 	return -1;
 }
 
-int al_size(ArrayList list)
+size_t al_size(ArrayList list)
 {
 	return list->size;
 }
@@ -152,15 +159,30 @@ void al_clear(ArrayList list)
 	list->size = 0;
 }
 
+void al_sort(ArrayList list)
+{
+	for (int i = 1; i < list->size; i++) {
+		Element key = list->array[i];
+		int j = i - 1;
+		while (j >= 0 && list->compare(list->array[i], key) > 0) {
+			list->array[j+1] = list->array[j];
+			j--;
+		}
+		list->array[j+1] = key;
+	}
+}
+
 void al_print(ArrayList list)
 {
 	if (al_is_empty(list)) {
 		printf("List is empty.\n");
 	} else {
 		for (int i = 0; i < list->size-1; i++) {
-			printf("%d, ", list->array[i]);
+			list->print_item(list->array[i]);
+			printf(", ");
 		}
-		printf("%d\n", list->array[list->size-1]);
+		list->print_item(list->array[list->size-1]);
+		printf("\n");
 	}
 	printf("Size: %d\n", list->size);
 	printf("Capacity: %d\n", list->capacity);
