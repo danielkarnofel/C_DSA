@@ -1,99 +1,134 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <assert.h>
 #include "array_list.h"
 
-int compare_int(void *a, void *b)
-{
-	int *p1 = (int*)a;
-	int *p2 = (int*)b;
-	int n1 = *p1;
-	int n2 = *p2;
-	if (n1 == n2) return 0;
-	return (n1 < n2) ? -1 : 1;
+// Comparison function for integers
+int int_compare(const Element a, const Element b) {
+    return (*(int*)a - *(int*)b);
 }
 
-void print_int(void *n)
-{
-	int *num = (int*)n;
-	printf("%d", *num);
+// Test ArrayList creation
+void test_al_create() {
+    ArrayList list = al_create(10);
+    assert(list != NULL);
+    assert(al_size(list) == 0);
+    assert(al_is_empty(list) == true);
+    al_destroy(list);
+    printf("test_al_create passed.\n");
 }
 
-Element create_int_element(int n) 
-{
-	void *e = malloc(sizeof(void*));
-	return memcpy(e, &n, sizeof(int));
+// Test adding elements to the ArrayList
+void test_al_add() {
+    ArrayList list = al_create(10);
+    
+    int a = 42, b = 99, c = 7;
+    assert(al_add(list, 0, &a) == true); // Add to the start
+    assert(al_add(list, 1, &b) == true); // Add to the end
+    assert(al_add(list, 1, &c) == true); // Add to the middle
+    
+    assert(al_size(list) == 3);
+    assert(*(int*)al_get(list, 0) == 42);
+    assert(*(int*)al_get(list, 1) == 7);
+    assert(*(int*)al_get(list, 2) == 99);
+    
+    al_destroy(list);
+    printf("test_al_add passed.\n");
 }
 
-int main(void)
-{
-	printf("\n");
+// Test removing elements from the ArrayList
+void test_al_remove() {
+    ArrayList list = al_create(10);
+    
+    int a = 42, b = 99, c = 7;
+    al_add(list, 0, &a);
+    al_add(list, 1, &b);
+    al_add(list, 2, &c);
 
-	printf("Creating list with initial capacity 5...\n");
-	ArrayList list = al_create(5, compare_int, print_int);
-	al_print(list);
-	printf("\n");
+    // Remove the middle element
+    Element removed = al_remove(list, 1);
+    assert(*(int*)removed == 99);
+    assert(al_size(list) == 2);
 
-	printf("Adding 1-5 to list...\n");
-	for (int i = 0; i < 5; i++) {
-		void *e = create_int_element(i+1);
-		al_add(list, i, e);
-	}
-	al_print(list);
-	printf("\n");
-
-	printf("Adding 6-20 to list...\n");
-	for (int i = 5; i < 20; i++) {
-		void *e = create_int_element(i+1);
-		al_add(list, i, e);
-	}
-	al_print(list);
-	printf("\n");
-
-	printf("Removing from beginning of list...\n");
-	al_remove(list, 0);
-	printf("Removing from middle of list...\n");
-	al_remove(list, al_size(list)/2);
-	printf("Removing from end of list...\n");
-	al_remove(list, al_size(list)-1);
-	al_print(list);
-	printf("\n");
-
-	printf("Setting index 0 to 100...\n");
-	al_set(list, 0, create_int_element(100));
-	printf("Setting index 10 to -100\n");
-	al_set(list, 10, create_int_element(-100));
-	al_print(list);
-	printf("\n");
-
-	printf("Getting index 0..\n");
-	printf("Index 0:");
-	print_int(al_get(list, 0));
-	printf("\n");
-	printf("Getting index 10..\n");
-	printf("Index 10:");
-	print_int(al_get(list, 10));
-	printf("\n");
-	al_print(list);
-	printf("\n");
-
-	printf("Getting index of value 100...\n");
-	printf("Index: %d\n", al_index_of(list, create_int_element(100)));
-	printf("Getting index of value -100...\n");
-	printf("Index: %d\n", al_index_of(list, create_int_element(-100)));
-	printf("Getting index of value 1000...\n");
-	printf("Index: %d\n", al_index_of(list, create_int_element(1000)));
-	al_print(list);
-	printf("\n");
-
-
-	printf("Clearing list...\n");
-	al_clear(list);
-	al_print(list);
-	printf("\n");
-
-	printf("Destroying list...\n");
-	al_destroy(list);
-	printf("\n");
+    // Remove the last element
+    removed = al_remove(list, 1);
+    assert(*(int*)removed == 7);
+    assert(al_size(list) == 1);
+    
+    al_destroy(list);
+    printf("test_al_remove passed.\n");
 }
+
+// Test setting elements in the ArrayList
+void test_al_set() {
+    ArrayList list = al_create(10);
+    
+    int a = 42, b = 99;
+    al_add(list, 0, &a);
+    
+    // Set a new value at index 0
+    Element old = al_set(list, 0, &b);
+    assert(*(int*)old == 42);
+    assert(*(int*)al_get(list, 0) == 99);
+    
+    al_destroy(list);
+    printf("test_al_set passed.\n");
+}
+
+// Test finding an element in the ArrayList
+void test_al_index_of() {
+    ArrayList list = al_create(10);
+    
+    int a = 42, b = 99, c = 7;
+    al_add(list, 0, &a);
+    al_add(list, 1, &b);
+    al_add(list, 2, &c);
+    
+    int target = 99;
+    int index = al_index_of(list, &target, int_compare);
+    assert(index == 1);
+    
+    target = 42;
+    index = al_index_of(list, &target, int_compare);
+    assert(index == 0);
+    
+    target = 999; // Non-existent element
+    index = al_index_of(list, &target, int_compare);
+    assert(index == -1);
+    
+    al_destroy(list);
+    printf("test_al_index_of passed.\n");
+}
+
+// Test sorting the ArrayList
+void test_al_sort() {
+    ArrayList list = al_create(10);
+    
+    int a = 42, b = 99, c = 7;
+    al_add(list, 0, &a);
+    al_add(list, 1, &b);
+    al_add(list, 2, &c);
+    
+    al_sort(list, int_compare);
+
+    assert(*(int*)al_get(list, 0) == 7);
+    assert(*(int*)al_get(list, 1) == 42);
+    assert(*(int*)al_get(list, 2) == 99);
+    
+    al_destroy(list);
+    printf("test_al_sort passed.\n");
+}
+
+// Main function to run all tests
+int main() {
+    test_al_create();
+    test_al_add();
+    test_al_remove();
+    test_al_set();
+    test_al_index_of();
+    test_al_sort();
+
+    printf("All tests passed successfully.\n");
+    return 0;
+}
+
 
